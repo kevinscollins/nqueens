@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: nqueens
+      POSTGRES_USER: nqueens
+      POSTGRES_PASSWORD: nqueens
+    ports:
+      - "5432:5432"
+
+  app:
+    environment:
+      POSTGRES_URL: 'postgresql://nqueens:nqueens@db:5432/nqueens'
+    build: .
+    volumes:
+      - .:/nqueens
+    tty: true

@@ -3,7 +3,7 @@ language: python
 services: docker
 
 before-install:
-  - docker-compose up
+  - docker-compose up --detach
 
 script:
   - docker-compose run app pytest nqueens      

@@ -6,5 +6,5 @@ before-install:
   - docker-compose up
 
 script:
-  - docker exec -it nqueens_app_1 pytest
+  - docker-compose run app pytest nqueens      
   

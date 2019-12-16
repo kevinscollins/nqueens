@@ -1,4 +1,4 @@
-from math import floor, pow
+from math import ceil, floor, pow
 
 class NQueensAlgorithm:
     def mask_to_str(self, mask):
@@ -20,6 +20,15 @@ class GregTrowbridgeAlgorithm(NQueensAlgorithm):
     [1] http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.51.7113&rep=rep1&type=pdf
     """
 
+    def get_first_row_starting_configurations(self):
+        return [{
+            'columns_in_row_order': [pow(2, c)],
+            'left_diagonal_mask': int(pow(2, c)) >> 1,
+            'column_mask': int(pow(2, c)),
+            'right_diagonal_mask': int(pow(2, c)) << 1
+        } for c in range(self.n)]
+
+
     def find_remaining_solutions(self, columns_in_row_order, left_diagonal_mask, column_mask, right_diagonal_mask):
         if column_mask == self.max_ones:
             self.solution_set.add(self.convert_to_boolean_string(columns_in_row_order))
@@ -37,14 +46,13 @@ class GregTrowbridgeAlgorithm(NQueensAlgorithm):
                 (column_mask | bit),
                 ((right_diagonal_mask | bit) << 1))
             
-    def __init__(self, solution_set):
+    def __init__(self, solution_set, run_now=True):
         self.solution_set = solution_set
         self.n = self.solution_set.n
         self.max_ones = int(pow(2, self.solution_set.n) - 1)
         self.count = 0
-        self.find_remaining_solutions(list(), 0, 0, 0)
-        print ("Found {} solutions for n = {}".format(self.count, self.n))
-
+        if run_now:
+            self.find_remaining_solutions(list(), 0, 0, 0)
 
 class JoyceLiuAlgorithm(NQueensAlgorithm):
     """
@@ -59,7 +67,18 @@ class JoyceLiuAlgorithm(NQueensAlgorithm):
 
     def convert_to_column_reverse_boolean_string(self, columns_in_row_order):
         return ''.join([str(self.mask_to_str(x))[::-1] for x in columns_in_row_order])
-    
+
+    def get_first_row_starting_configurations(self):
+        return [{
+            'columns_in_row_order': [int(pow(2, c))],
+            'left_diagonal_mask': int(pow(2, c)) >> 1,
+            'column_mask': int(pow(2, c)),
+            'right_diagonal_mask': int(pow(2, c)) << 1
+        } for c in range(ceil(self.n  / 2))]
+
+    def find_solutions_from_top_row(self, columns_in_row_order, left_diagonal_mask, column_mask, right_diagonal_mask):
+        return self.find_remaining_solutions(columns_in_row_order, left_diagonal_mask, column_mask, right_diagonal_mask, self.excluded_columns_mask, self.excluded_columns_mask if (self.n % 2) else 0)
+        
     def find_remaining_solutions(self, columns_in_row_order, left_diagonal_mask, column_mask, right_diagonal_mask, exclude_mask, next_row_exclude_mask):
 
         if self.n == 1:
@@ -67,6 +86,8 @@ class JoyceLiuAlgorithm(NQueensAlgorithm):
             self.count = 1
             return
         if column_mask == self.max_ones:
+            print('found a solution! self.n = ' + str(self.n))
+            print('found a solution! columns_in_row_order = ' + str(columns_in_row_order))
             self.solution_set.add(self.convert_to_boolean_string(columns_in_row_order))
             self.solution_set.add(self.convert_to_column_reverse_boolean_string(columns_in_row_order))
             self.count += 2
@@ -87,7 +108,7 @@ class JoyceLiuAlgorithm(NQueensAlgorithm):
             )
             next_row_exclude_mask = 0
             
-    def __init__(self, solution_set):
+    def __init__(self, solution_set, run_now=True):
         self.solution_set = solution_set
         self.n = self.solution_set.n
         self.max_ones = int(pow(2, self.n) - 1)
@@ -95,5 +116,6 @@ class JoyceLiuAlgorithm(NQueensAlgorithm):
         self.excluded_columns_mask = int(pow(2, floor(self.n / 2)) - 1)
                                               
         self.count = 0
-        self.find_remaining_solutions(list(), 0, 0, 0, self.excluded_columns_mask, self.excluded_columns_mask if (self.n % 2) else 0)
-        print ("Found {} solutions for n = {}".format(self.count, self.n))
+        if run_now:
+#            self.find_remaining_solutions(list(), 0, 0, 0, self.excluded_columns_mask, self.excluded_columns_mask if (self.n % 2) else 0)
+            self.find_solutions_from_top_row(list(), 0, 0, 0)

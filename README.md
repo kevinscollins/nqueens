@@ -41,7 +41,7 @@ with a recent/compatible Docker installation.
 I implemented Greg Trowbridge's ["A Bitwise Solution to the N Queens Problem in JavaScript"](http://gregtrowbridge.com/a-bitwise-solution-to-the-n-queens-problem-in-javascript/)
 in python, and upgraded it with Joyce Liu's ["Using Symmetry to Optimize an N-Queens Counting Algorithm"](http://liujoycec.github.io/2015/09/20/n_queens_symmetry/). 
 
-I believe both of these approaches are parallizable, by separating out each column of the first row into separate recursive processes, 
+I believe both of these approaches are parallelizable, by separating out each column of the first row into separate recursive processes, 
 but did not get this successfully working in a short period of time, see [wip_multiprocessing](https://github.com/kevinscollins/nqueens/tree/wip_multiprocessing).
 
 ## Performance

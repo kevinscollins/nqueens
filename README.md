@@ -46,7 +46,7 @@ but did not get this successfully working in a short period of time, see [wip_mu
 
 ## Performance
 
-On my 2016 Macbook Pro, I can run N = 14 in 48 seconds of "wall clock" time, including container startup and overhead, etc. For N = 15, it takes right arond 10 minutes.
+On my 2016 Macbook Pro, I can run N = 14 in 48 seconds of "wall clock" time, including container startup and overhead, etc. For N = 15, it takes right around 10 minutes.
 For comparison, Joyce Liu's JavaScript algorithm completes N = 16 in about 8 seconds 😳 - althought it doesn't save, or even store, the solutions.
 
 I profiled it with cProfile and the majority of the time is getting used with bitwise operations. There are other functions that could be improved for incremental speedup.

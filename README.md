@@ -47,11 +47,9 @@ but did not get this successfully working in a short period of time, see [wip_mu
 ## Performance
 
 On my 2016 Macbook Pro, I can run N = 14 in 48 seconds of "wall clock" time, including container startup and overhead, etc. For N = 15, it takes right around 10 minutes.
-For comparison, Joyce Liu's JavaScript algorithm completes N = 16 in about 8 seconds 😳 - althought it doesn't save, or even store, the solutions.
+For comparison, Joyce Liu's JavaScript algorithm completes N = 16 in about 8 seconds 😳 - althought it doesn't save, or even track, the board solutions.
 
-I profiled it with cProfile and the majority of the time is getting used with bitwise operations. There are other functions that could be improved for incremental speedup.
-
-I did not realize how slow python's bitwise operations are and might have approached this problem differently if I had. Short of implementing the recursive logic natively, 
+I profiled it with cProfile and the majority of the time is getting used with bitwise operations. I did not realize how slow python's bitwise operations are and might have approached this problem differently if I had. Short of implementing the recursive logic natively, 
 I did not find a good way to get native-esque bit operation performance in python.
 
 
